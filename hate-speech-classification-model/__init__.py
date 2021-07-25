@@ -1,0 +1,1 @@
+from hatespeech import HateSpeechClassifier
