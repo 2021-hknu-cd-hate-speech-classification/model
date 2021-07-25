@@ -3,6 +3,5 @@ torch
 pytorch_lightning
 transformers
 sklearn
-re
 emoji
 sonlpy
