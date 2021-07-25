@@ -1,7 +1,7 @@
 import setuptools
 
 with open("requirements.txt", mode="r", encoding="utf-8") as deps_file:
-    dependencies = deps_file.read()
+    dependencies = deps_file.read().splitlines()
 
 setuptools.setup(
     name="hate-speech-classification-model",
