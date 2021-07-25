@@ -25,7 +25,7 @@ class HateSpeechClassifier(pl.LightningModule):
         self.MAX_LENGTH = hyper_parameter["max_length"] or 150
         self.LEARNING_RATE = hyper_parameter["lr"] or 5e-6
         self.EPOCHS = hyper_parameter["epochs"] or 5
-        self.MODEL_NAME = hyper_parameter["model"] or "monologg/koelectra-base-v3-discriminator"
+        self.MODEL_NAME = hyper_parameter["model"] or "beomi/KcELECTRA-base"
 
         # 사용할 모델
         self.electra = ElectraForSequenceClassification.from_pretrained(
