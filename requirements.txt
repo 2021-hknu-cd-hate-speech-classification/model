@@ -4,4 +4,4 @@ pytorch_lightning
 transformers
 sklearn
 emoji
-sonlpy
+soynlp
