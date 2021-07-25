@@ -1,1 +1,1 @@
-from hatespeech import HateSpeechClassifier
+from hatespeech_model import HateSpeechClassifier
