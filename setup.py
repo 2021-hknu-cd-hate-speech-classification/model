@@ -8,5 +8,6 @@ setuptools.setup(
     version="0.0.1",
     description="한경대학교 컴퓨터공학과 캡스톤디자인",
     license="MIT",
+    packages=setuptools.find_packages(),
     install_requires=dependencies
 )
