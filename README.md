@@ -2,9 +2,9 @@
 
 ## 사용 방법
 ```sh
-pip install git+https://github.com/2021-hknu-cd-hate-speech-classification/model.git#egg=<module_name>
+pip install "git+https://github.com/2021-hknu-cd-hate-speech-classification/model.git#egg=hate_speech_classification_model"
 ```
 
 ```py
-from <module_name> import HateSpeechClassifier
+from hate_speech_classification_model import HateSpeechClassifier
 ```
