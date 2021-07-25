@@ -17,11 +17,11 @@ class HateSpeechClassifier(pl.LightningModule):
     def __init__(self, hyper_parameter: dict):
         super().__init__()
 
-        # 데이터셋 주소
+        ### 데이터셋 주소 ###
         self.TRAIN_SET_URL = "https://raw.githubusercontent.com/kocohub/korean-hate-speech/master/labeled/train.tsv"
         self.DEV_SET_URL = "https://raw.githubusercontent.com/2021-hknu-cd-hate-speech-classification/Curse-detection-data/master/dataset.txt"
 
-        # 하이퍼파라미터
+        ### 하이퍼파라미터 ###
         self.MAX_LENGTH = hyper_parameter["max_length"] or 150
         self.LEARNING_RATE = hyper_parameter["lr"] or 5e-6
         self.EPOCHS = hyper_parameter["epochs"] or 5
@@ -29,9 +29,10 @@ class HateSpeechClassifier(pl.LightningModule):
         self.OPTIMIZER = hyper_parameter["optimizer"] or "adamw"
         self.GAMMA = hyper_parameter["gamma"] or 0.5
 
-        # 사용할 모델
-        self.electra = ElectraForSequenceClassification.from_pretrained(
-            self.MODEL_NAME)
+        ### 사용할 모델 ###
+        self.electra = ElectraForSequenceClassification \
+            .from_pretrained(self.MODEL_NAME)
+
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
 
         self.train_set = None
