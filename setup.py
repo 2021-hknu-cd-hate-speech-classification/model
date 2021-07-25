@@ -1,4 +1,3 @@
-from os import name
 import setuptools
 
 with open("requirements.txt", mode="r", encoding="utf-8") as deps_file:
