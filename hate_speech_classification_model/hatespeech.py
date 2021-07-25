@@ -1,5 +1,8 @@
-import pandas as pd
 import torch
+import re
+import emoji
+import soynlp
+import pandas as pd
 import pytorch_lightning as pl
 from torch.utils.data import Dataset, DataLoader, TensorDataset
 from torch.optim import Adam, AdamW, SGD
@@ -8,9 +11,6 @@ from pytorch_lightning import LightningModule, Trainer, seed_everything
 from transformers import ElectraForSequenceClassification, AutoTokenizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split
-import re
-import emoji
-import soynlp
 
 
 class HateSpeechClassifier(pl.LightningModule):
