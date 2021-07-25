@@ -2,7 +2,7 @@ import pandas as pd
 import torch
 import pytorch_lightning as pl
 from torch.utils.data import Dataset, DataLoader, TensorDataset
-from torch.optim import AdamW, SGD
+from torch.optim import Adam, AdamW, SGD
 from torch.optim.lr_scheduler import ExponentialLR
 from pytorch_lightning import LightningModule, Trainer, seed_everything
 from transformers import ElectraForSequenceClassification, AutoTokenizer
@@ -26,6 +26,8 @@ class HateSpeechClassifier(pl.LightningModule):
         self.LEARNING_RATE = hyper_parameter["lr"] or 5e-6
         self.EPOCHS = hyper_parameter["epochs"] or 5
         self.MODEL_NAME = hyper_parameter["model"] or "beomi/KcELECTRA-base"
+        self.OPTIMIZER = hyper_parameter["optimizer"] or "adamw"
+        self.GAMMA = hyper_parameter["gamma"] or 0.5
 
         # 사용할 모델
         self.electra = ElectraForSequenceClassification.from_pretrained(
@@ -169,8 +171,14 @@ class HateSpeechClassifier(pl.LightningModule):
         return self.__epoch_end(outputs, state="test")
 
     def configure_optimizers(self):
-        optimizer = AdamW(self.parameters(), lr=self.LEARNING_RATE)
-        scheduler = ExponentialLR(optimizer, gamma=0.5)
+        if self.OPTIMIZER is "adamw":
+            optimizer = AdamW(self.parameters(), lr=self.LEARNING_RATE)
+        elif self.OPTIMIZER is "sgd":
+            optimizer = SGD(self.parameters(), lr=self.LEARNING_RATE)
+        else:
+            optimizer = Adam(self.parameters(), lr=self.LEARNING_RATE)
+
+        scheduler = ExponentialLR(optimizer, gamma=self.GAMMA)
 
         return {
             "optimizer": optimizer,
