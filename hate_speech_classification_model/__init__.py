@@ -1,0 +1,1 @@
+from hate_speech_classification_model.hatespeech_model import HateSpeechClassifier
