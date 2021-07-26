@@ -30,9 +30,7 @@ class HateSpeechClassifier(pl.LightningModule):
         self.GAMMA = hyper_parameter["gamma"] or 0.5
 
         ### 사용할 모델 ###
-        self.electra = ElectraForSequenceClassification \
-            .from_pretrained(self.MODEL_NAME)
-
+        self.electra = ElectraForSequenceClassification.from_pretrained(self.MODEL_NAME)
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
 
         self.train_set = None
