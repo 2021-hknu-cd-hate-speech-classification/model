@@ -18,8 +18,8 @@ class HateSpeechClassifier(pl.LightningModule):
         super().__init__()
 
         ### 데이터셋 주소 ###
-        self.TRAIN_SET_URL = "https://raw.githubusercontent.com/kocohub/korean-hate-speech/master/labeled/train.tsv"
-        self.DEV_SET_URL = "https://raw.githubusercontent.com/2021-hknu-cd-hate-speech-classification/Curse-detection-data/master/dataset.txt"
+        self.TRAIN_SET_URL = "https://raw.githubusercontent.com/2021-hknu-cd-hate-speech-classification/dataset/main/split/train.csv"
+        self.TEST_SET_URL = "https://raw.githubusercontent.com/2021-hknu-cd-hate-speech-classification/dataset/main/split/test.csv"
 
         ### 하이퍼파라미터 ###
         self.MAX_LENGTH = hyper_parameter["max_length"] or 150
@@ -67,25 +67,14 @@ class HateSpeechClassifier(pl.LightningModule):
     def prepare_data(self) -> None:
         # 웹에서 데이터 받아오기
         train_raw_data = pd.read_csv(self.TRAIN_SET_URL, sep="\t")
-        dev_raw_data = pd.read_csv(self.DEV_SET_URL, sep="\t")
+        test_raw_data = pd.read_csv(self.TEST_SET_URL, sep="\t")
 
         # 텍스트 인코딩
-        train_raw_data["comments"] = train_raw_data["comments"].map(
-            self.__encode)
-        dev_raw_data["comments"] = dev_raw_data["comments"].map(self.__encode)
+        train_raw_data["comments"] = train_raw_data["comments"].map(self.__encode)
+        test_raw_data["comments"] = test_raw_data["comments"].map(self.__encode)
 
-        # hate 열의 데이터를 텍스트에서 숫자로 변경
-        # none은 0, offensive와 hate가 1임
-        train_raw_data["hate"] = train_raw_data["hate"].replace(
-            ["none", "offensive", "hate"], [0, 1, 1])
-
-        # 안쓰는 열 제거
-        del train_raw_data["contain_gender_bias"]
-        del train_raw_data["bias"]
-
-        self.train_set, self.valid_set = train_test_split(
-            train_raw_data, test_size=0.1)
-        self.test_set = dev_raw_data
+        self.train_set, self.valid_set = train_test_split(train_raw_data, test_size=0.1)
+        self.test_set = test_raw_data
 
     @staticmethod
     def __dataloader(df, shuffle: bool = False):
