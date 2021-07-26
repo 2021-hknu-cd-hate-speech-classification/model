@@ -22,12 +22,12 @@ class HateSpeechClassifier(pl.LightningModule):
         self.TEST_SET_URL = "https://raw.githubusercontent.com/2021-hknu-cd-hate-speech-classification/dataset/main/split/test.csv"
 
         ### 하이퍼파라미터 ###
-        self.MAX_LENGTH = hyper_parameter["max_length"] if (hyper_parameter["max_length"] is not None) else 150
-        self.LEARNING_RATE = hyper_parameter["lr"] if (hyper_parameter["lr"] is not None) else 5e-6
-        self.EPOCHS = hyper_parameter["epochs"] if (hyper_parameter["epochs"] is not None) else 5
-        self.MODEL_NAME = hyper_parameter["model"] if (hyper_parameter["model"] is not None) else "beomi/KcELECTRA-base"
-        self.OPTIMIZER = hyper_parameter["optimizer"] if (hyper_parameter["optimizer"] is not None) else "adamw"
-        self.GAMMA = hyper_parameter["gamma"] if (hyper_parameter["gamma"] is not None) else 0.5
+        self.MAX_LENGTH = hyper_parameter["max_length"] if ("max_length" in hyper_parameter) else 150
+        self.LEARNING_RATE = hyper_parameter["lr"] if ("lr" in hyper_parameter) else 5e-6
+        self.EPOCHS = hyper_parameter["epochs"] if ("epochs" in hyper_parameter) else 5
+        self.MODEL_NAME = hyper_parameter["model"] if ("model" in hyper_parameter) else "beomi/KcELECTRA-base"
+        self.OPTIMIZER = hyper_parameter["optimizer"] if ("optimizer" in hyper_parameter) else "adamw"
+        self.GAMMA = hyper_parameter["gamma"] if ("gamma" in hyper_parameter) else 0.5
 
         ### 사용할 모델 ###
         self.electra = ElectraForSequenceClassification.from_pretrained(self.MODEL_NAME)
