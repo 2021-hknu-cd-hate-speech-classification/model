@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import re
 import emoji
@@ -134,15 +135,9 @@ class HateSpeechClassifier(pl.LightningModule):
             y_pred += i["y_pred"]
 
         acc = accuracy_score(y_true, y_pred)
-        prec = precision_score(y_true, y_pred)
-        rec = recall_score(y_true, y_pred)
-        f1 = f1_score(y_true, y_pred)
-
-        self.log(state + "_loss", float(loss), on_epoch=True, prog_bar=True)
-        self.log(state + '_acc', acc, on_epoch=True, prog_bar=True)
-        self.log(state + '_precision', prec, on_epoch=True, prog_bar=True)
-        self.log(state + '_recall', rec, on_epoch=True, prog_bar=True)
-        self.log(state + '_f1', f1, on_epoch=True, prog_bar=True)
+        prec = precision_score(y_true, y_pred, labels=np.unique(y_pred))
+        rec = recall_score(y_true, y_pred, labels=np.unique(y_pred))
+        f1 = f1_score(y_true, y_pred, labels=np.unique(y_pred))
 
         print(f"[Epoch {self.trainer.current_epoch} {state.upper()}]",
               f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}")
