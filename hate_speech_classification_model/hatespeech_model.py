@@ -10,7 +10,7 @@ from torch.optim import Adam, AdamW, SGD
 from torch.optim.lr_scheduler import ExponentialLR
 from pytorch_lightning import LightningModule, Trainer, seed_everything
 from transformers import ElectraForSequenceClassification, AutoTokenizer
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 
 
@@ -131,13 +131,15 @@ class HateSpeechClassifier(pl.LightningModule):
             y_pred += i["y_pred"]
 
         loss = loss / len(outputs)
+        conf_matrix = confusion_matrix(y_true, y_pred)
         acc = accuracy_score(y_true, y_pred)
         prec = precision_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
         rec = recall_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
         f1 = f1_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
 
         print(f"[Epoch {self.trainer.current_epoch} {state.upper()}]",
-              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}")
+              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}",
+              f"Confusion Matrix={conf_matrix}")
 
         return {"loss": loss, "acc": acc, "prec": prec, "rec": rec, "f1": f1}
 
