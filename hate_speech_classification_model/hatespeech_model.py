@@ -123,26 +123,23 @@ class HateSpeechClassifier(pl.LightningModule):
 
     def __epoch_end(self, outputs, state="train"):
         loss = torch.tensor(0, dtype=torch.float)
-
-        for i in outputs:
-            loss += i["loss"].cpu().detach()
-        loss = loss / len(outputs)
-
         y_true, y_pred = [], []
 
         for i in outputs:
+            loss += i["loss"].cpu().detach()
             y_true += i["y_true"]
             y_pred += i["y_pred"]
 
+        loss = loss / len(outputs)
         acc = accuracy_score(y_true, y_pred)
-        prec = precision_score(y_true, y_pred, labels=np.unique(y_pred))
-        rec = recall_score(y_true, y_pred, labels=np.unique(y_pred))
-        f1 = f1_score(y_true, y_pred, labels=np.unique(y_pred))
+        prec = precision_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
+        rec = recall_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
+        f1 = f1_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
 
         print(f"[Epoch {self.trainer.current_epoch} {state.upper()}]",
               f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}")
 
-        return {"loss": loss}
+        return {"loss": loss, "acc": acc, "prec": prec, "rec": rec, "f1": f1}
 
     def train_epoch_end(self, outputs):
         return self.__epoch_end(outputs, state="train")
@@ -154,9 +151,9 @@ class HateSpeechClassifier(pl.LightningModule):
         return self.__epoch_end(outputs, state="test")
 
     def configure_optimizers(self):
-        if self.OPTIMIZER is "adamw":
+        if self.OPTIMIZER == "adamw":
             optimizer = AdamW(self.parameters(), lr=self.LEARNING_RATE)
-        elif self.OPTIMIZER is "sgd":
+        elif self.OPTIMIZER == "sgd":
             optimizer = SGD(self.parameters(), lr=self.LEARNING_RATE)
         else:
             optimizer = Adam(self.parameters(), lr=self.LEARNING_RATE)
