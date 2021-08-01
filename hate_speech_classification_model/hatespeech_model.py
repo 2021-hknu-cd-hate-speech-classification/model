@@ -144,7 +144,7 @@ class HateSpeechClassifier(pl.LightningModule):
         self.log(f"{state}_f1", f1, on_epoch=True, prog_bar=True)
 
         print(f"[Epoch {self.trainer.current_epoch} {state.upper()}]",
-              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}",
+              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1},",
               "CM={}".format(str(cm).replace("\n", "")))
 
         return {"loss": loss, "acc": acc, "prec": prec, "rec": rec, "f1": f1}
