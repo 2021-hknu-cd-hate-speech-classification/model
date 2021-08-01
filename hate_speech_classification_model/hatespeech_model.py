@@ -129,19 +129,18 @@ class HateSpeechClassifier(pl.LightningModule):
             loss += i["loss"].cpu().detach()
             y_true += i["y_true"]
             y_pred += i["y_pred"]
+            print(f"y_true={i['y_true']}, y_pred={i['y_pred']}")
 
         loss = loss / len(outputs)
-        conf_matrix = confusion_matrix(y_true, y_pred)
+        cm = confusion_matrix(y_true, y_pred)
         acc = accuracy_score(y_true, y_pred)
         prec = precision_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
         rec = recall_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
         f1 = f1_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
 
-        print(f"y_true={y_true}, y_pred={y_pred}")
-
-        print(f"[Epoch {self.trainer.current_epoch} {state.upper()}]\n",
-              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}\n",
-              f"Confusion Matrix={conf_matrix}")
+        print(f"[Epoch {self.trainer.current_epoch} {state.upper()}]",
+              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}")
+        print(f"TP={cm[0][0]} FP={cm[0][1]} FN={cm[1][0]} TN={cm[1][1]}")
 
         return {"loss": loss, "acc": acc, "prec": prec, "rec": rec, "f1": f1}
 
