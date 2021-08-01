@@ -138,8 +138,8 @@ class HateSpeechClassifier(pl.LightningModule):
         f1 = f1_score(y_true, y_pred, labels=np.unique(y_pred), zero_division=1)
 
         print(f"[Epoch {self.trainer.current_epoch} {state.upper()}]",
-              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}")
-        print("Confusion Matrix={}".format("\n", ""))
+              f"Loss={loss}, Acc={acc}, Prec={prec}, Rec={rec}, F1={f1}",
+              "Confusion Matrix={}".format(str(cm).replace("\n", "")))
 
         return {"loss": loss, "acc": acc, "prec": prec, "rec": rec, "f1": f1}
 
