@@ -143,14 +143,14 @@ class HateSpeechClassifier(pl.LightningModule):
 
         return {"loss": loss, "acc": acc, "prec": prec, "rec": rec, "f1": f1}
 
-    def train_epoch_end(self, outputs):
-        return self.__epoch_end(outputs, state="train")
+    def training_epoch_end(self, outputs):
+        self.__epoch_end(outputs, state="train")
 
     def validation_epoch_end(self, outputs):
-        return self.__epoch_end(outputs, state="val")
+        self.__epoch_end(outputs, state="val")
 
     def test_epoch_end(self, outputs):
-        return self.__epoch_end(outputs, state="test")
+        self.__epoch_end(outputs, state="test")
 
     def configure_optimizers(self):
         if self.OPTIMIZER == "adamw":
