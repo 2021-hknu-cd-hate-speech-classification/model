@@ -129,7 +129,6 @@ class HateSpeechClassifier(pl.LightningModule):
             loss += i["loss"].cpu().detach()
             y_true += i["y_true"]
             y_pred += i["y_pred"]
-            print(f"y_true={i['y_true']}, y_pred={i['y_pred']}")
 
         loss = loss / len(outputs)
         cm = confusion_matrix(y_true, y_pred)
