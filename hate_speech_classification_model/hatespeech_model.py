@@ -153,12 +153,14 @@ class HateSpeechClassifier(pl.LightningModule):
         self.__epoch_end(outputs, state="test")
 
     def configure_optimizers(self):
-        if self.OPTIMIZER == "adamw":
+        if self.OPTIMIZER == "adam":
+            optimizer = Adam(self.parameters(), lr=self.LEARNING_RATE)
+        elif self.OPTIMIZER == "adamw":
             optimizer = AdamW(self.parameters(), lr=self.LEARNING_RATE)
         elif self.OPTIMIZER == "sgd":
             optimizer = SGD(self.parameters(), lr=self.LEARNING_RATE)
         else:
-            optimizer = Adam(self.parameters(), lr=self.LEARNING_RATE)
+            raise NotImplementedError(f"'{self.OPTIMIZER}' is not available.")
 
         scheduler = ExponentialLR(optimizer, gamma=self.GAMMA)
 
