@@ -15,7 +15,7 @@ from hate_speech_classification_model import HateSpeechClassifier
 
 | 이름 | 설명 | 값으로 들어갈 수 있는 것 | 기본값 |
 |--|--|--| -- |
-| `model` | fine-tuning에 사용될 모델 이름 | `'beomi/KcELECTRA'`, `'monologg/koelectra-base-v3-discriminator'`| `beomi/KcELECTRA` |
+| `model` | fine-tuning에 사용될 모델 이름 | `'beomi/KcELECTRA'`, `'monologg/koelectra-base-v3-discriminator'`, `'skt/kogpt2-base-v2'`| `beomi/KcELECTRA` |
 | `max_length` | Tokenizer가 사용할 문자열 길이 | `int`형 값. | `150` |
 | `lr` | 학습률 | `float`형 값. | `5e-6` |
 | `epochs` | epoch 수 | `int`형 값. | `5` |
