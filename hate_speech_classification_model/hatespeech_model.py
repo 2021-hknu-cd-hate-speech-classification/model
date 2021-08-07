@@ -33,6 +33,11 @@ class HateSpeechClassifier(pl.LightningModule):
         ### 사용할 모델 ###
         self.model = AutoModel.from_pretrained(self.MODEL_NAME)
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
+        if self.MODEL_NAME == "skt/kogpt2-base-v2":
+            self.tokenizer.add_special_tokens({
+                "bos_token": "</s>", "eos_token": "</s>", "unk_token": "<unk>",
+                "pad_token": "<pad>", "mask_token": "<mask>"
+            })
 
         self.train_set = None
         self.valid_set = None
