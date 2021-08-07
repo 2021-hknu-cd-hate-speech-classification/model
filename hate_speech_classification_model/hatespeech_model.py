@@ -9,7 +9,7 @@ from torch.utils.data import Dataset, DataLoader, TensorDataset
 from torch.optim import Adam, AdamW, SGD
 from torch.optim.lr_scheduler import ExponentialLR
 from pytorch_lightning import LightningModule, Trainer, seed_everything
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 
@@ -31,7 +31,7 @@ class HateSpeechClassifier(pl.LightningModule):
         self.GAMMA = hyper_parameter["gamma"] if ("gamma" in hyper_parameter) else 0.5
 
         ### 사용할 모델 ###
-        self.model = AutoModel.from_pretrained(self.MODEL_NAME)
+        self.model = AutoModelForSequenceClassification.from_pretrained(self.MODEL_NAME)
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
         if self.MODEL_NAME == "skt/kogpt2-base-v2":
             self.tokenizer.add_special_tokens({
