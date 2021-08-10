@@ -35,8 +35,8 @@ class HateSpeechClassifier(pl.LightningModule):
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
         if "kogpt2" in self.MODEL_NAME:
             self.tokenizer.add_special_tokens({
-                "bos_token": "[/s]", "eos_token": "[/s]", "unk_token": "[unk]",
-                "pad_token": "[pad]", "mask_token": "[mask]"
+                "bos_token": "</s>", "eos_token": "</s>", "unk_token": "<unk>",
+                "pad_token": "<pad>", "mask_token": "<mask>"
             })
 
         self.train_set = None
