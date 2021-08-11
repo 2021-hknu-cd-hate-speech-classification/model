@@ -61,18 +61,14 @@ class HateSpeechClassifier(pl.LightningModule):
         return x
 
     def __encode(self, x):
+        encode = self.tokenizer.encode(
+            self.__clean(x),
+            padding="max_length",
+            max_length=self.MAX_LENGTH,
+        )
+
         if "kogpt2" in self.MODEL_NAME:
-            encode = self.tokenizer.encode(
-                self.__clean(x),
-                padding="max_length",
-                max_length=self.MAX_LENGTH - 1
-            ) + [self.tokenizer.eos_token_id]
-        else:
-            encode = self.tokenizer.encode(
-                self.__clean(x),
-                padding="max_length",
-                max_length=self.MAX_LENGTH,
-            )
+            encode = [self.tokenizer.bos_token_id] + encode[0:self.MAX_LENGTH - 2] + [self.tokenizer.eos_token_id]
 
         return encode
 
