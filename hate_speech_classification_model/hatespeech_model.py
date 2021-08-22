@@ -169,8 +169,8 @@ class HateSpeechClassifier(pl.LightningModule):
             "scheduler": scheduler
         }
 
-    def infer(self, x):
+    def infer(self, text: str) -> list:
         return torch.softmax(
-            self(self.__encode(x)).logits,
+            self(**self.tokenizer(text, return_tensors="pt")).logits,
             dim=-1
-        )
+        )[0].tolist()
