@@ -29,6 +29,7 @@ class HateSpeechClassifier(pl.LightningModule):
         self.MODEL_NAME = hyper_parameter["model"] if ("model" in hyper_parameter) else "beomi/KcELECTRA-base"
         self.OPTIMIZER = hyper_parameter["optimizer"] if ("optimizer" in hyper_parameter) else "adamw"
         self.GAMMA = hyper_parameter["gamma"] if ("gamma" in hyper_parameter) else 0.5
+        self.BATCH_SIZE = hyper_parameter["batch_size"] if ("batch_size" in hyper_parameter) else 32
 
         ### 사용할 모델 ###
         self.electra = ElectraForSequenceClassification.from_pretrained(self.MODEL_NAME)
@@ -75,14 +76,14 @@ class HateSpeechClassifier(pl.LightningModule):
         self.train_set, self.valid_set = train_test_split(train_raw_data, test_size=0.1)
         self.test_set = test_raw_data
 
-    @staticmethod
-    def __dataloader(df, shuffle: bool = False):
+    def __dataloader(self, df, shuffle: bool = False):
         return DataLoader(
             TensorDataset(
                 torch.tensor(df["comments"].to_list(), dtype=torch.long),
                 torch.tensor(df["hate"].to_list(), dtype=torch.long)
             ),
-            shuffle=shuffle
+            shuffle=shuffle,
+            batch_size=self.BATCH_SIZE
         )
 
     def train_dataloader(self):
