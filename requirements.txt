@@ -1,7 +1,7 @@
 pandas
-torch
-pytorch_lightning
-transformers
+torch               == 1.8.0
+pytorch_lightning   == 1.4.5
+transformers        == 4.10.1
 sklearn
 emoji
 soynlp
